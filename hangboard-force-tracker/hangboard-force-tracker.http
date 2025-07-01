@@ -1,0 +1,6 @@
+@hangboard_force_tracker_HostAddress = http://localhost:5012
+
+GET {{hangboard_force_tracker_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
