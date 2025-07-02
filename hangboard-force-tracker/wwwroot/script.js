@@ -28,6 +28,8 @@ const forceChart = new Chart(ctx, {
 async function fetchData() {
     const response = await fetch('/latest');
     const data = await response.json();
+    
+    console.log(data);
 
     const now = Date.now() / 1000;
     forceChart.data.datasets[0].data = data.map(point => ({
@@ -37,5 +39,5 @@ async function fetchData() {
     forceChart.update();
 }
 
-// Updates every 100ms
-setInterval(fetchData, 100);
+// Updates every 250ms
+setInterval(fetchData, 250);

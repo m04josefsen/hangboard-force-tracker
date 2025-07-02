@@ -19,7 +19,16 @@ namespace hangboard_force_tracker
             if (!double.TryParse(payload["value"].ToString(), out double value))
                 return BadRequest(new { status = "invalid value" });
 
-            var timestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+            double timestamp;
+
+            if (payload.ContainsKey("t") && double.TryParse(payload["t"].ToString(), out double tValue))
+            {
+                timestamp = tValue;
+            }
+            else
+            {
+                timestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+            }
 
             lock (lockObj)
             {
