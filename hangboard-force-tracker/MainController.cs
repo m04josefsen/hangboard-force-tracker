@@ -13,26 +13,20 @@ namespace hangboard_force_tracker
         [HttpPost("data")]
         public IActionResult ReceiveData([FromBody] Dictionary<string, object> payload)
         {
-            if (payload == null || !payload.ContainsKey("value"))
+            if (payload == null || !payload.ContainsKey("value") || !payload.ContainsKey("time"))
                 return BadRequest(new { status = "missing value" });
 
             if (!double.TryParse(payload["value"].ToString(), out double value))
                 return BadRequest(new { status = "invalid value" });
 
-            double timestamp;
-
-            if (payload.ContainsKey("t") && double.TryParse(payload["t"].ToString(), out double tValue))
+            if (!double.TryParse(payload["time"].ToString(), out double time))
             {
-                timestamp = tValue;
-            }
-            else
-            {
-                timestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+                return BadRequest(new { status = "invalid time" });
             }
 
             lock (lockObj)
             {
-                dataBuffer.Add(new { t = timestamp, y = value });
+                dataBuffer.Add(new { t = time, y = value });
 
                 if (dataBuffer.Count > MaxDataPoints)
                     dataBuffer.RemoveAt(0);

@@ -3,7 +3,7 @@ const forceChart = new Chart(ctx, {
     type: 'line',
     data: {
         datasets: [{
-            label: 'Kraft (kg)',
+            label: 'Force (kg)',
             data: [],
             borderColor: 'rgb(75, 192, 192)',
             tension: 0.2
@@ -14,10 +14,12 @@ const forceChart = new Chart(ctx, {
         scales: {
             x: {
                 type: 'linear',
-                title: { display: true, text: 'Tid (sek)' }
+                title: { display: true, text: 'Time (sec)' },
+                suggestedMin: 0,
+                SuggestedMax: 10
             },
             y: {
-                title: { display: true, text: 'Kraft (kg)' },
+                title: { display: true, text: 'Force (kg)' },
                 suggestedMin: 0,
                 suggestedMax: 100
             }
@@ -31,9 +33,9 @@ async function fetchData() {
     
     console.log(data);
 
-    const now = Date.now() / 1000;
+    // const now = Date.now() / 1000;
     forceChart.data.datasets[0].data = data.map(point => ({
-        x: point.t - now,
+        x: point.t,
         y: point.y
     }));
     forceChart.update();
