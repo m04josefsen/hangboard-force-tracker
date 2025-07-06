@@ -11,11 +11,29 @@
         
     </header>
     <main>
-        <h2>Forcetracker</h2>
+        <h1>Forcetracker</h1>
         <div class="chart-container"><canvas id="forceChart"></canvas></div>
         
+        <div class="force-meters">
+            <!--- TODO: border rundt, skal vise den nyeste verduen i tabellen currently-->
+            <div>
+                <p>Current force</p>
+                <p id="currentForce">temp</p>
+            </div>
+            <div>
+                <p>Max force</p>
+                <p id="maxForce">temp</p>
+            </div>
+            <div>
+                <p>Average force</p>
+                <p id="averageForce">temp</p>
+            </div>
+        </div>
+        
         <div class="buttons">
-            <button id="deleteData" onclick="deleteData()">Delete data</button>
+            <button id="turnOnTracking" onclick="">Turn on tracking</button>
+            <button id="turnOffTracking" onlick="">Turn off tracking</button>
+            
             <button id="fiveSecAvg" onclick="fiveSecAvg()">Five Seconds Average</button>
         </div>
     

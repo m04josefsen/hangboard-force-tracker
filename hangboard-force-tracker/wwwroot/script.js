@@ -5,7 +5,9 @@ const forceChart = new Chart(ctx, {
         datasets: [{
             label: 'Force (kg)',
             data: [],
-            borderColor: 'rgb(75, 192, 192)',
+            borderColor: '#e2b714',
+            pointBackgroundColor: '#e2b714',
+            pointBorderColor: '#e2b714',
             tension: 0.2,
             parsing: false
         }]
@@ -28,6 +30,10 @@ const forceChart = new Chart(ctx, {
         }
     }
 });
+
+let maxForce = 0;
+let averageforce = 0;
+let currentForce = 0;
 
 // TODO: skal ikke kjøre hele tiden?
 // Kanskje returner Data? så jeg kan sjekke lengden
