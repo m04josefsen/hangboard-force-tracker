@@ -31,17 +31,32 @@ const forceChart = new Chart(ctx, {
     }
 });
 
-let maxForce = 0;
-let averageforce = 0;
-let currentForce = 0;
+// Add interaction to tracking button
+let tracking = false;
+let interval = null;
 
-// TODO: skal ikke kjøre hele tiden?
+document.getElementById("trackingButton").addEventListener("click", async () => {
+    tracking = !tracking;
+
+    if (tracking) {
+        await deleteData();
+        
+        // Updates every 250ms
+        interval = setInterval(fetchData, 250);
+        document.getElementById("trackingButton").textContent = "Stop";
+    } else {
+        clearInterval(interval); // Can now access it here
+        document.getElementById("trackingButton").textContent = "Start";
+    }
+});
+
 // Kanskje returner Data? så jeg kan sjekke lengden
 async function fetchData() {
     const response = await fetch('/latest');
     const data = await response.json();
 
     console.log(data);
+    updateForceVariables(data);
 
     forceChart.data.datasets[0].data = data.map(point => ({
         x: point.time,
@@ -51,11 +66,28 @@ async function fetchData() {
     forceChart.update();
 }
 
-// Updates every 250ms
-setInterval(fetchData, 250);
+function updateForceVariables(data) {
+    let maxForce = 0;
+    let averageForce = 0;
+    let currentForce = 0;
+    let sum = 0;
+    
+    for(let i in data) {
+        sum += data[i].force
+        
+        if(data[i].force > maxForce) {
+            maxForce = data[i].force;
+        }
+    }
+    
+    averageForce = sum / data.length;
+    currentForce = data[data.length - 1].force;
+    
+    document.getElementById("currentForce").innerHTML = currentForce;
+    document.getElementById("maxForce").innerHTML = maxForce;
+    document.getElementById("averageForce").innerHTML = averageForce;
+}
 
-/*
-// TODO: blir nå tømt av en knapp, men kanskje alle knappene skal tømme, eks mål 5 sek average,
 async function deleteData() {
     await fetch('/deleteData', {
         method: 'DELETE'
@@ -84,8 +116,6 @@ async function fiveSecAvg() {
         // await sleep(250);
     }
 }
-
- */
 
 /*
 Plan:
