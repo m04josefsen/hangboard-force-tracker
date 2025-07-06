@@ -6,17 +6,19 @@ const forceChart = new Chart(ctx, {
             label: 'Force (kg)',
             data: [],
             borderColor: 'rgb(75, 192, 192)',
-            tension: 0.2
+            tension: 0.2,
+            parsing: false
         }]
     },
     options: {
+        responsive: true,
         animation: false,
         scales: {
             x: {
                 type: 'linear',
                 title: { display: true, text: 'Time (sec)' },
                 suggestedMin: 0,
-                SuggestedMax: 10
+                suggestedMax: 10
             },
             y: {
                 title: { display: true, text: 'Force (kg)' },
@@ -32,16 +34,21 @@ const forceChart = new Chart(ctx, {
 async function fetchData() {
     const response = await fetch('/latest');
     const data = await response.json();
-    
+
     console.log(data);
 
     forceChart.data.datasets[0].data = data.map(point => ({
-        x: point.t,
-        y: point.y
+        x: point.time,
+        y: point.force
     }));
+
     forceChart.update();
 }
 
+// Updates every 250ms
+setInterval(fetchData, 250);
+
+/*
 // TODO: blir nå tømt av en knapp, men kanskje alle knappene skal tømme, eks mål 5 sek average,
 async function deleteData() {
     await fetch('/deleteData', {
@@ -56,25 +63,23 @@ async function fiveSecAvg() {
     let data = await response.json();
 
     // Every 0.25s > 5 * 4 = 20
-    while(data.Length < 20) {
+    while(data.length < 20) {
         response = await fetch('/latest');
         data = await response.json();
         
         console.log(data);
 
         forceChart.data.datasets[0].data = data.map(point => ({
-            x: point.t,
-            y: point.y
+            x: point.time,
+            y: point.force
         }));
         forceChart.update();
         
-        await sleep(250);
+        // await sleep(250);
     }
 }
 
-// Updates every 250ms
-// TODO: fjern?
-setInterval(fetchData, 250);
+ */
 
 /*
 Plan:
