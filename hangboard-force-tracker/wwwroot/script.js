@@ -15,6 +15,7 @@ const forceChart = new Chart(ctx, {
     options: {
         responsive: true,
         animation: false,
+        maintainAspectRatio: false,
         scales: {
             x: {
                 type: 'linear',
@@ -80,7 +81,7 @@ function updateForceVariables(data) {
         }
     }
     
-    averageForce = sum / data.length;
+    averageForce = (sum / data.length).toFixed(1);
     currentForce = data[data.length - 1].force;
     
     document.getElementById("currentForce").innerHTML = currentForce;
@@ -94,31 +95,20 @@ async function deleteData() {
     });
 }
 
-async function fiveSecAvg() {
+// Calls fetch data for five seconds
+// TODO: maybe have seconds as input instead of 5?
+async function fiveSeconds() {
     await deleteData();
 
-    let response = await fetch('/latest');
-    let data = await response.json();
+    let count = 0;
+    const maxCount = 20; // 20 * 250ms = 5 seconds
 
-    // Every 0.25s > 5 * 4 = 20
-    while(data.length < 20) {
-        response = await fetch('/latest');
-        data = await response.json();
-        
-        console.log(data);
+    const interval = setInterval(async () => {
+        await fetchData();
+        count++;
 
-        forceChart.data.datasets[0].data = data.map(point => ({
-            x: point.time,
-            y: point.force
-        }));
-        forceChart.update();
-        
-        // await sleep(250);
-    }
+        if (count >= maxCount) {
+            clearInterval(interval);
+        }
+    }, 250);
 }
-
-/*
-Plan:
- - når man trykker på en modus, kalles delete data
- - fetchData, kjører x antall ganger?, kanskje while loop med x som input, hvis ingen input kjører den til noe stopper den?
- */

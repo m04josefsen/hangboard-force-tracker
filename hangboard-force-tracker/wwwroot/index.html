@@ -12,30 +12,31 @@
     </header>
     <main>
         <h1>Forcetracker</h1>
-        <div class="chart-container"><canvas id="forceChart"></canvas></div>
-        
-        <div class="force-meters">
-            <!--- TODO: border rundt, skal vise den nyeste verduen i tabellen currently-->
-            <div>
-                <p>Current force</p>
-                <p id="currentForce">0</p>
+        <div class="chart-container">
+            <div class="chart-wrapper">
+                <canvas id="forceChart"></canvas>
             </div>
-            <div>
-                <p>Max force</p>
-                <p id="maxForce">0</p>
-            </div>
-            <div>
-                <p>Average force</p>
-                <p id="averageForce">0</p>
+
+            <div class="force-meters">
+                <div>
+                    <p>Current force</p>
+                    <p id="currentForce">0</p>
+                </div>
+                <div>
+                    <p>Max force</p>
+                    <p id="maxForce">0</p>
+                </div>
+                <div>
+                    <p>Average force</p>
+                    <p id="averageForce">0</p>
+                </div>
             </div>
         </div>
         
         <div class="buttons">
             <button id="trackingButton">Start</button>
-            
-            <button id="fiveSecAvg" onclick="fiveSecAvg()">Five Seconds Average</button>
+            <button id="fiveSeconds" onclick="fiveSeconds()">Five Seconds</button>
         </div>
-    
     </main>
     <footer>
         
