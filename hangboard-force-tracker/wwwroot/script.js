@@ -40,6 +40,7 @@ document.getElementById("trackingButton").addEventListener("click", async () => 
     tracking = !tracking;
 
     if (tracking) {
+        await createCountdown();
         await deleteData();
         
         // Updates every 250ms
@@ -98,8 +99,9 @@ async function deleteData() {
 // Calls fetch data for five seconds
 // TODO: maybe have seconds as input instead of 5?
 async function fiveSeconds() {
+    await createCountdown();
     await deleteData();
-
+    
     let count = 0;
     const maxCount = 20; // 20 * 250ms = 5 seconds
 
@@ -111,4 +113,23 @@ async function fiveSeconds() {
             clearInterval(interval);
         }
     }, 250);
+}
+
+// 3-second countdown before measuring
+function createCountdown() {
+    return new Promise((resolve) => {
+        const display = document.getElementById("countdownDisplay");
+        let timeLeft = 3;
+
+        const interval = setInterval(() => {
+            display.innerText = timeLeft + 's';
+            timeLeft--;
+
+            if (timeLeft < 0) {
+                clearInterval(interval);
+                display.innerText = 'GO!';
+                resolve(); 
+            }
+        }, 1000);
+    });
 }
