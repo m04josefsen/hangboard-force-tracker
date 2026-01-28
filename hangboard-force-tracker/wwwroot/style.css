@@ -2,6 +2,7 @@ body {
     background-color: #323437;
     color: #e2b714;
     font-family: "Roboto Mono", "Roboto Mono", "Vazirmatn", monospace;
+    margin: 0;
 }
 
 .chart-container {
